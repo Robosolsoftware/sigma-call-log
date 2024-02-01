@@ -8,6 +8,7 @@ pageextension 90101 SalesAndRecSetup extends "Sales & Receivables Setup"
             field("Task Nos."; Rec."Task Nos.")
             {
                 ApplicationArea = All;
+                Caption = 'Call log Nos.';
             }
         }
     }
@@ -19,4 +20,5 @@ pageextension 90101 SalesAndRecSetup extends "Sales & Receivables Setup"
 
     var
         myInt: Integer;
+        te: Page "Date-Time Dialog";
 }

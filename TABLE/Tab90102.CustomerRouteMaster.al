@@ -6,28 +6,36 @@ table 90102 "Customer Route Master"
 
     fields
     {
-        field(1; "Entry No."; Integer)
-        {
-            DataClassification = ToBeClassified;
-            AutoIncrement = true;
-        }
         field(2; "Customer Account"; Code[100])
         {
-            Caption = 'Customer Account';
+            Caption = 'Sell-to Customer No.';
             DataClassification = ToBeClassified;
             TableRelation = Customer;
+
+            trigger OnValidate()
+            var
+                L_Customer: Record Customer;
+            begin
+                L_Customer.Reset();
+                L_Customer.SetRange("No.", Rec."Customer Account");
+                if L_Customer.FindFirst() then begin
+                    L_Customer.TestField("QAU Approved");
+                    L_Customer.TestField(Status, L_Customer.Status::Released);
+                end;
+
+            end;
         }
         field(3; "Contact ID"; Code[100])
         {
-            Caption = 'Contact ID';
+            Caption = 'Primary Contact ID';
             DataClassification = ToBeClassified;
-            TableRelation = Contact;
+            //TableRelation = Contact;
         }
         field(4; "Delivery Route"; Text[30])
         {
-            Caption = 'Delivery Route';
+            Caption = 'Shipping Agent Code';
             DataClassification = ToBeClassified;
-            TableRelation = "Delivery Route Master"."Delivery Route";
+            //TableRelation = "Delivery Route Master"."Delivery Route";
         }
         field(5; "Drop Sequence"; Integer)
         {
@@ -38,7 +46,7 @@ table 90102 "Customer Route Master"
         {
             Caption = 'Call Book ID';
             DataClassification = ToBeClassified;
-            TableRelation = "Call Book Setup"."Call Book ID";
+            //TableRelation = "Call Book Setup"."Call Book ID";
         }
         field(7; "Call Time"; Time)
         {
@@ -47,16 +55,157 @@ table 90102 "Customer Route Master"
         }
         field(8; "Delivery Sequence"; Code[10])//Pranali07122023_US_13116
         {
-            Caption = 'Delivery Sequence';
+            Caption = 'Shipping Agent Service Code';
             DataClassification = ToBeClassified;
-            TableRelation = "Shipping Agent Services".Code where("Shipping Agent Code" = field("Delivery Route"));
+            //TableRelation = "Shipping Agent Services".Code where("Shipping Agent Code" = field("Delivery Route"));
         }
+        field(9; "Secondary Contact ID"; Code[100])
+        {
+            Caption = 'Secondary Contact ID';
+            DataClassification = ToBeClassified;
+            //TableRelation = Contact;
+        }
+        field(10; Monday; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(11; Tuesday; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(12; Wednesday; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(13; Thursday; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(14; Friday; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(15; Saturday; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(16; Sunday; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(17; "Monday Time Slot1"; Time)
+        {
+            Caption = 'Call Time Slot1';
+        }
+        field(18; "Monday Time Slot2"; Time)
+        {
+            Caption = 'Call Time Slot2';
+        }
+        field(19; "Monday Time Slot3"; Time)
+        {
+            Caption = 'Call Time Slot3';
+        }
+        field(20; "Tuesday Time Slot1"; Time)
+        {
+            Caption = 'Call Time Slot1';
+        }
+        field(21; "Tuesday Time Slot2"; Time)
+        {
+            Caption = 'Call Time Slot2';
+        }
+        field(22; "Tuesday Time Slot3"; Time)
+        {
+            Caption = 'Call Time Slot3';
+        }
+
+        field(23; "Wednesday Time Slot1"; Time)
+        {
+            Caption = 'Call Time Slot1';
+        }
+        field(24; "Wednesday Time Slot2"; Time)
+        {
+            Caption = 'Call Time Slot2';
+        }
+        field(25; "Wednesday Time Slot3"; Time)
+        {
+            Caption = 'Call Time Slot3';
+        }
+
+        field(26; "Thursday Time Slot1"; Time)
+        {
+            Caption = 'Call Time Slot1';
+        }
+        field(27; "Thursday Time Slot2"; Time)
+        {
+            Caption = 'Call Time Slot2';
+        }
+        field(28; "Thursday Time Slot3"; Time)
+        {
+            Caption = 'Call Time Slot3';
+        }
+
+        field(29; "Friday Time Slot1"; Time)
+        {
+            Caption = 'Call Time Slot1';
+        }
+        field(30; "Friday Time Slot2"; Time)
+        {
+            Caption = 'Call Time Slot2';
+        }
+        field(31; "Friday Time Slot3"; Time)
+        {
+            Caption = 'Call Time Slot3';
+        }
+
+        field(32; "Saturday Time Slot1"; Time)
+        {
+            Caption = 'Call Time Slot1';
+        }
+        field(33; "Saturday Time Slot2"; Time)
+        {
+            Caption = 'Call Time Slot2';
+        }
+        field(34; "Saturday Time Slot3"; Time)
+        {
+            Caption = 'Call Time Slot3';
+        }
+
+        field(35; "Sunday Time Slot1"; Time)
+        {
+            Caption = 'Call Time Slot1';
+        }
+        field(36; "Sunday Time Slot2"; Time)
+        {
+            Caption = 'Call Time Slot2';
+        }
+        field(37; "Sunday Time Slot3"; Time)
+        {
+            Caption = 'Call Time Slot3';
+        }
+        field(38; "Salesperson Code"; Code[20])
+        {
+            TableRelation = "Salesperson/Purchaser";
+            Caption = 'SalesPerson/Purchaser Code';
+        }
+
     }
     keys
     {
-        key(PK; "Entry No.", "Customer Account")
+        key(PK; "Customer Account", "Salesperson Code")
         {
             Clustered = true;
         }
     }
+
+
+    trigger OnDelete()
+    var
+        CallDistributions: Record "Call Distributions";
+    begin
+        CallDistributions.Reset();
+        CallDistributions.SetRange("Employee Responsible", Rec."Salesperson Code");
+        CallDistributions.SetRange("Customer Account", Rec."Customer Account");
+        if CallDistributions.FindSet() then
+            CallDistributions.DeleteAll();
+    end;
 }

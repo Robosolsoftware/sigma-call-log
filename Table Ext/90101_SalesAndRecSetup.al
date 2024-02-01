@@ -6,7 +6,7 @@ tableextension 90101 SalesAndRecSetupExt extends "Sales & Receivables Setup"
         field(50110; "Task Nos."; Code[20])
         {
             DataClassification = ToBeClassified;
-            Caption = 'Task Nos.';
+            Caption = 'Call log Nos.';
             TableRelation = "No. Series";
         }
     }

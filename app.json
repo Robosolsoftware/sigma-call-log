@@ -1,7 +1,7 @@
 {
   "id": "923db135-b86b-4c4b-a270-03791636262d",
   "name": "Call Log",
-  "publisher": "Default publisher",
+  "publisher": "Robosol",
   "version": "1.0.0.0",
   "brief": "",
   "description": "",
@@ -10,7 +10,21 @@
   "help": "",
   "url": "",
   "logo": "",
-  "dependencies": [],
+  "dependencies": [
+    {
+      "id": "9d21f859-860e-4a4d-ab73-d2bf6815a030",
+      "name": "Customer_Trends",
+      "publisher": "Robosol",
+      "version": "19.0.0.0"
+    },
+    {
+      "id": "89b2d3ff-cff9-4506-9a14-597a5b6d370f",
+      "name": "Interim WMS BC Customisation",
+      "publisher": "Robosol",
+      "version": "1.0.0.2"
+    }
+    
+  ],
   "screenshots": [],
   "platform": "1.0.0.0",
   "application": "21.0.0.0",

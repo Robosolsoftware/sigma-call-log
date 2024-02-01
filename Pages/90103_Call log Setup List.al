@@ -1,11 +1,11 @@
-page 90103 "Customer Route List"
+page 90103 "Call Log Setup List"
 {
     ApplicationArea = All;
-    Caption = 'Customer Route List';
+    Caption = 'Call Log Setup List';
     PageType = List;
     SourceTable = "Customer Route Master";
     UsageCategory = Administration;
-    CardPageId = "Customer Master Route Card";
+    CardPageId = "Call log Setup";
     Editable = false;
     RefreshOnActivate = true;
 
@@ -15,35 +15,29 @@ page 90103 "Customer Route List"
         {
             repeater(General)
             {
+                field("Salesperson Code"; Rec."Salesperson Code")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    Caption = 'SalesPerson/Purchaser Code';
+                }
                 field("Customer Account"; Rec."Customer Account")
                 {
                     ToolTip = 'Specifies the value of the Customer Account field.';
                     ApplicationArea = All;
+                    Caption = 'Sell-to Customer No.';
                 }
                 field("Delivery Route"; Rec."Delivery Route")
                 {
                     ToolTip = 'Specifies the value of the Delivery Route field.';
                     ApplicationArea = All;
+                    Caption = 'Shipping Agent Code';
                 }
                 field("Delivery Sequence"; Rec."Delivery Sequence")//Pranali07122023_US_13116
                 {
                     ToolTip = 'Specifies the value of the Delivery Sequence field.';
                     ApplicationArea = All;
-                }
-                field("Call Book ID"; Rec."Call Book ID")
-                {
-                    ToolTip = 'Specifies the value of the Call Book ID field.';
-                    ApplicationArea = All;
-                }
-                field("Call Time"; Rec."Call Time")
-                {
-                    ToolTip = 'Specifies the value of the Call Time field.';
-                    ApplicationArea = All;
-                }
-                field("Drop Sequence"; Rec."Drop Sequence")
-                {
-                    ToolTip = 'Specifies the value of the Drop Sequence field.';
-                    ApplicationArea = All;
+                    Caption = 'Shipping Agent Service Code';
                 }
             }
         }
