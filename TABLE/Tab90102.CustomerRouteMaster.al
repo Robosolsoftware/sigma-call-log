@@ -35,7 +35,21 @@ table 90102 "Customer Route Master"
         {
             Caption = 'Shipping Agent Code';
             DataClassification = ToBeClassified;
-            //TableRelation = "Delivery Route Master"."Delivery Route";
+            TableRelation = "Shipping Agent";
+            Editable = false;
+
+            trigger OnValidate()
+            var
+                ShippingAgent: Record "Shipping Agent";
+            begin
+                if Rec."Delivery Route" <> '' then begin
+                    ShippingAgent.Reset();
+                    ShippingAgent.SetRange(code, Rec."Delivery Route");
+                    ShippingAgent.SetRange(Status, ShippingAgent.Status::Released);
+                    if Not ShippingAgent.FindFirst() then
+                        Error('Status must be equal to Released in Shipping Agent');
+                end;
+            end;
         }
         field(5; "Drop Sequence"; Integer)
         {
@@ -57,7 +71,21 @@ table 90102 "Customer Route Master"
         {
             Caption = 'Shipping Agent Service Code';
             DataClassification = ToBeClassified;
-            //TableRelation = "Shipping Agent Services".Code where("Shipping Agent Code" = field("Delivery Route"));
+            TableRelation = "Shipping Agent Services".Code where("Shipping Agent Code" = field("Delivery Route"));
+            Editable = false;
+
+            trigger OnValidate()
+            var
+                ShippingAgentServices: Record "Shipping Agent Services";
+            begin
+                if Rec."Delivery Sequence" <> '' then begin
+                    ShippingAgentServices.Reset();
+                    ShippingAgentServices.SetRange(code, Rec."Delivery Sequence");
+                    ShippingAgentServices.SetRange(Status, ShippingAgentServices.Status::Released);
+                    if Not ShippingAgentServices.FindFirst() then
+                        Error('Status must be equal to Released in Shipping Agent Service');
+                end;
+            end;
         }
         field(9; "Secondary Contact ID"; Code[100])
         {
@@ -191,6 +219,20 @@ table 90102 "Customer Route Master"
         {
             Caption = 'Weekend Shipping Agent Service Code';
             TableRelation = "Shipping Agent Services".Code where("Shipping Agent Code" = field("Delivery Route"));
+            Editable = false;
+
+            trigger OnValidate()
+            var
+                ShippingAgentServices: Record "Shipping Agent Services";
+            begin
+                if Rec."Weekend Ship. Agnt. Serv. Code" <> '' then begin
+                    ShippingAgentServices.Reset();
+                    ShippingAgentServices.SetRange(code, Rec."Weekend Ship. Agnt. Serv. Code");
+                    ShippingAgentServices.SetRange(Status, ShippingAgentServices.Status::Released);
+                    if Not ShippingAgentServices.FindFirst() then
+                        Error('Status must be equal to Released in Shipping Agent Service');
+                end;
+            end;
         }
 
     }
