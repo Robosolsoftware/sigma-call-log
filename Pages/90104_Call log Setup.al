@@ -32,6 +32,9 @@ page 90104 "Call log Setup"
                         L_Customer.Reset();
                         L_Customer.SetRange("No.", Rec."Customer Account");
                         if L_Customer.FindFirst() then begin
+                            L_Customer.TestField("QAU Approved");
+                            L_Customer.TestField(Status, L_Customer.Status::Released);
+
                             Rec."Delivery Route" := L_Customer."Shipping Agent Code";
                             Rec."Delivery Sequence" := L_Customer."Shipping Agent Service Code";
                             Rec."Weekend Ship. Agnt. Serv. Code" := L_Customer."Weekend Ship. Agnt. Serv. Code";
