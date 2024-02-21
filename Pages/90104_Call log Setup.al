@@ -34,9 +34,11 @@ page 90104 "Call log Setup"
                         if L_Customer.FindFirst() then begin
                             Rec."Delivery Route" := L_Customer."Shipping Agent Code";
                             Rec."Delivery Sequence" := L_Customer."Shipping Agent Service Code";
+                            Rec."Weekend Ship. Agnt. Serv. Code" := L_Customer."Weekend Ship. Agnt. Serv. Code";
                         end else begin
                             Rec."Delivery Route" := '';
                             Rec."Delivery Sequence" := '';
+                            Rec."Weekend Ship. Agnt. Serv. Code" := '';
                         end;
 
                     end;
@@ -150,17 +152,24 @@ page 90104 "Call log Setup"
                 Editable = false;
                 field("Delivery Route"; Rec."Delivery Route")
                 {
-                    ToolTip = 'Specifies the value of the Delivery Route field.';
+                    ToolTip = 'Specifies the value of the Shipping Agent Code field.';
                     ApplicationArea = All;
                     Editable = false;
                     Caption = 'Shipping Agent Code';
                 }
                 field("Delivery Sequence"; Rec."Delivery Sequence")//Pranali07122023_US_13116
                 {
-                    ToolTip = 'Specifies the value of the Delivery Sequence field.';
+                    ToolTip = 'Specifies the value of the Shipping Agent Service Code field.';
                     ApplicationArea = All;
                     Editable = false;
                     Caption = 'Shipping Agent Service Code';
+                }
+                field("Weekend Ship. Agnt. Serv. Code"; Rec."Weekend Ship. Agnt. Serv. Code")
+                {
+                    ToolTip = 'Specifies the value of the Weekend Shipping Agent Service Code field.';
+                    ApplicationArea = All;
+                    Editable = false;
+                    Caption = 'Weekend Shipping Agent Service Code';
                 }
             }
             group(Call)

@@ -171,6 +171,11 @@ table 90104 "Call Distributions"
         {
 
         }
+        field(24; "Weekend Ship. Agnt. Serv. Code"; Code[10])
+        {
+            Caption = 'Weekend Shipping Agent Service Code';
+            TableRelation = "Shipping Agent Services".Code where("Shipping Agent Code" = field("Route Number"));
+        }
 
     }
     keys
@@ -224,7 +229,7 @@ table 90104 "Call Distributions"
         Day := Rec."Call Day";
         L_Date.Reset();
         L_Date.SetRange(L_Date."Period Type", L_Date."Period Type"::Date);
-        L_Date.SetFilter(L_Date."Period Start", '%1..%2', Today, CalcDate('+7D', Today));
+        L_Date.SetFilter(L_Date."Period Start", '%1..%2', Rec."Planned Date", CalcDate('+7D', Rec."Planned Date"));
         if L_Date.FindSet() then begin
             repeat
                 if (L_Date."Period Name" = Day) and (L_Date."Period Start" = Today) then begin
@@ -238,21 +243,33 @@ table 90104 "Call Distributions"
         end;
         L_CallDistribution.Validate("Planned Date", NewDate);
 
-        L_ShippingAgentServices.Reset();
-        L_ShippingAgentServices.SetRange("Shipping Agent Code", Rec."Route Number");
-        L_ShippingAgentServices.SetRange(Code, Rec."Route Sequence");
-        if L_ShippingAgentServices.FindFirst() then begin
-            if L_ShippingAgentServices."Shipping Time" = NewDFvar then //NewDFvar is blank varible
-                L_CallDistribution.Validate("Delivery Date", CalcDate('<+1D>', L_CallDistribution."Planned Date"))
-            else begin
-                L_CallDistribution.Validate("Delivery Date", CalcDate(L_ShippingAgentServices."Shipping Time", L_CallDistribution."Planned Date"))
+        //Update Delivery date and day based on weekend shipping agent service code++
+        //This is new requirement++
+        if UpperCase(Rec."Call Day") = UpperCase('FRIDAY') then begin
+            if Rec."Weekend Ship. Agnt. Serv. Code" <> '' then begin
+                L_CallDistribution.Validate("Delivery Date", CalcDate('<+1D>', L_CallDistribution."Planned Date")); //Weekend+
+            end else begin
+                L_CallDistribution.Validate("Delivery Date", CalcDate('<+3D>', L_CallDistribution."Planned Date")); //Monday++
             end;
-        end else
-            L_CallDistribution.Validate("Delivery Date", CalcDate('<+1D>', L_CallDistribution."Planned Date"));
+        end else begin
+            L_ShippingAgentServices.Reset();
+            L_ShippingAgentServices.SetRange("Shipping Agent Code", Rec."Route Number");
+            L_ShippingAgentServices.SetRange(Code, Rec."Route Sequence");
+            if L_ShippingAgentServices.FindFirst() then begin
+                if L_ShippingAgentServices."Shipping Time" = NewDFvar then //NewDFvar is blank varible
+                    L_CallDistribution.Validate("Delivery Date", CalcDate('<+1D>', L_CallDistribution."Planned Date"))
+                else begin
+                    L_CallDistribution.Validate("Delivery Date", CalcDate(L_ShippingAgentServices."Shipping Time", L_CallDistribution."Planned Date"))
+                end;
+            end else
+                L_CallDistribution.Validate("Delivery Date", CalcDate('<+1D>', L_CallDistribution."Planned Date"));
+        end;
+
         L_CallDistribution.Validate("Planned Time", Rec."Planned Time");
         L_CallDistribution.Validate("Employee Responsible", Rec."Employee Responsible");
         // L_CallDistribution.Validate("Delivery Date", CalcDate('<+1D>', L_CallDistribution."Planned Date"));//Pranali08222023_US_13869
         L_CallDistribution.Validate("Route Sequence", Rec."Route Sequence");
+        L_CallDistribution.Validate("Weekend Ship. Agnt. Serv. Code", Rec."Weekend Ship. Agnt. Serv. Code");
         L_CallDistribution.Validate("Day Slot No.", Rec."Day Slot No.");
         L_CallDistribution.Insert(true);
         Message('Next Call log Created.');

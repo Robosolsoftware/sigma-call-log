@@ -187,6 +187,11 @@ table 90102 "Customer Route Master"
             TableRelation = "Salesperson/Purchaser";
             Caption = 'SalesPerson/Purchaser Code';
         }
+        field(39; "Weekend Ship. Agnt. Serv. Code"; Code[10])
+        {
+            Caption = 'Weekend Shipping Agent Service Code';
+            TableRelation = "Shipping Agent Services".Code where("Shipping Agent Code" = field("Delivery Route"));
+        }
 
     }
     keys

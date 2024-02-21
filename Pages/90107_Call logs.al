@@ -208,6 +208,13 @@ page 90107 "Call logs"
                     Caption = 'Shipping Agent Service Code';
 
                 }
+                field("Weekend Ship. Agnt. Serv. Code"; Rec."Weekend Ship. Agnt. Serv. Code")
+                {
+                    ToolTip = 'Specifies the value of the Weekend Shipping Agent Service Code field.';
+                    ApplicationArea = All;
+                    Editable = false;
+                    Caption = 'Weekend Shipping Agent Service Code';
+                }
                 field("Delivery Day"; Rec."Delivery Day")
                 {
                     ToolTip = 'Specifies the value of the Delivery Day field.';

@@ -134,18 +134,26 @@ page 90108 "Call log Card"
                     Editable = false;
                     Caption = 'Shipping Agent Service Code';
                 }
+                field("Weekend Ship. Agnt. Serv. Code"; Rec."Weekend Ship. Agnt. Serv. Code")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    Caption = 'Weekend Shipping Agent Service Code';
+                }
                 field("Delivery Date"; Rec."Delivery Date")
                 {
                     ToolTip = 'Specifies the value of the Delivery Date field.';
                     ApplicationArea = All;
-                    Editable = G_Edit;
+                    //Editable = G_Edit;
+                    Editable = false;
                     Caption = 'Shipment Date';
                 }
                 field("Delivery Day"; Rec."Delivery Day")
                 {
                     ToolTip = 'Specifies the value of the Delivery Day field.';
                     ApplicationArea = All;
-                    Editable = G_Edit;
+                    //Editable = G_Edit;
+                    Editable = false;
                     Caption = 'Shipment Day';
                 }
                 field(Status; Rec.Status)
@@ -185,7 +193,7 @@ page 90108 "Call log Card"
                         Error('');
 
                     CurrPage.Update();
-                    CTFunctions.CreateCustomertrends(Rec."Customer Account", Rec."Employee Responsible", Rec."Delivery Date", Rec."Route Number", Rec."Route Sequence");
+                    CTFunctions.CreateCustomertrends(Rec."Customer Account", Rec."Employee Responsible", Rec."Delivery Date", Rec."Route Number", Rec."Route Sequence", Rec."Weekend Ship. Agnt. Serv. Code");
                 end;
 
             }
