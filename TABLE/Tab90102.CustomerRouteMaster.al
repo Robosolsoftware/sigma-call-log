@@ -252,7 +252,16 @@ table 90102 "Customer Route Master"
         CallDistributions.Reset();
         CallDistributions.SetRange("Employee Responsible", Rec."Salesperson Code");
         CallDistributions.SetRange("Customer Account", Rec."Customer Account");
-        if CallDistributions.FindSet() then
-            CallDistributions.DeleteAll();
+        CallDistributions.SetRange(Status, CallDistributions.Status::Open);
+        if CallDistributions.FindFirst() then begin
+            if not Confirm('Open call logs exist. Do you want to delete?', false) then
+                Error('');
+
+            CallDistributions.Reset();
+            CallDistributions.SetRange("Employee Responsible", Rec."Salesperson Code");
+            CallDistributions.SetRange("Customer Account", Rec."Customer Account");
+            if CallDistributions.FindSet() then
+                CallDistributions.DeleteAll();
+        end;
     end;
 }

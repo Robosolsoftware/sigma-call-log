@@ -13,11 +13,27 @@ page 90104 "Call log Setup"
             group(General)
             {
                 Caption = 'General';
-                Editable = G_EditCallLogSetup;
                 field("Salesperson Code"; Rec."Salesperson Code")
                 {
                     ApplicationArea = All;
                     Caption = 'SalesPerson/Purchaser Code';
+
+
+                    trigger OnValidate()
+                    var
+                        L_Calllogs: Record "Call Distributions";
+                    begin
+                        //Check if Call logs Exist++
+                        if Rec."Salesperson Code" <> xRec."Salesperson Code" then begin
+                            L_Calllogs.Reset();
+                            L_Calllogs.SetRange("Customer Account", Rec."Customer Account");
+                            L_Calllogs.SetRange("Employee Responsible", xRec."Salesperson Code");
+                            L_Calllogs.SetRange(Status, L_Calllogs.Status::Open);
+                            if L_Calllogs.FindFirst() then
+                                if L_Calllogs."Employee Responsible" <> '' then
+                                    Error('Open Call logs exist. Please delete call logs for Sales Person: %1, Sell-to customer No.: %2 and try again', xRec."Salesperson Code", Rec."Customer Account");
+                        end;
+                    end;
                 }
                 field("Customer Account"; Rec."Customer Account")
                 {
@@ -28,7 +44,22 @@ page 90104 "Call log Setup"
                     trigger OnValidate()
                     var
                         L_Customer: Record Customer;
+                        L_Calllogs: Record "Call Distributions";
                     begin
+                        if Rec."Salesperson Code" = '' then
+                            Error('Sales Person should not be blank');
+
+                        //Check if Call logs Exist++
+                        if Rec."Customer Account" <> xRec."Customer Account" then begin
+                            L_Calllogs.Reset();
+                            L_Calllogs.SetRange("Customer Account", xRec."Customer Account");
+                            L_Calllogs.SetRange("Employee Responsible", Rec."Salesperson Code");
+                            L_Calllogs.SetRange(Status, L_Calllogs.Status::Open);
+                            if L_Calllogs.FindFirst() then
+                                if L_Calllogs."Customer Account" <> '' then
+                                    Error('Open Call logs exist. Please delete call logs for Sales Person: %1, Sell-to customer No.: %2 and try again', Rec."Salesperson Code", xRec."Customer Account");
+                        end;
+
                         L_Customer.Reset();
                         L_Customer.SetRange("No.", Rec."Customer Account");
                         if L_Customer.FindFirst() then begin
@@ -97,6 +128,28 @@ page 90104 "Call log Setup"
                         exit(true);
                     end;
 
+                    trigger OnValidate()
+                    var
+                        L_Calllogs: Record "Call Distributions";
+                    begin
+                        if Rec."Salesperson Code" = '' then
+                            Error('Sales Person should not be blank');
+
+                        if Rec."Customer Account" = '' then
+                            Error('Sell-to Customer No. should not be blank');
+
+                        //Check if Call logs Exist++
+                        if Rec."Contact ID" <> xRec."Contact ID" then begin
+                            L_Calllogs.Reset();
+                            L_Calllogs.SetRange("Customer Account", xRec."Customer Account");
+                            L_Calllogs.SetRange("Employee Responsible", Rec."Salesperson Code");
+                            L_Calllogs.SetRange(Status, L_Calllogs.Status::Open);
+                            if L_Calllogs.FindFirst() then
+                                if L_Calllogs."Customer Account" <> '' then
+                                    Error('Open Call logs exist. Please delete call logs for Sales Person: %1, Sell-to customer No.: %2 and try again', Rec."Salesperson Code", xRec."Customer Account");
+                        end;
+                    end;
+
                 }
                 field("Secondary Contact ID"; Rec."Secondary Contact ID")
                 {
@@ -147,6 +200,28 @@ page 90104 "Call log Setup"
                             Text := Tab_Cont."No.";
                         end;
                         exit(true);
+                    end;
+
+                    trigger OnValidate()
+                    var
+                        L_Calllogs: Record "Call Distributions";
+                    begin
+                        if Rec."Salesperson Code" = '' then
+                            Error('Sales Person should not be blank');
+
+                        if Rec."Customer Account" = '' then
+                            Error('Sell-to Customer No. should not be blank');
+
+                        //Check if Call logs Exist++
+                        if Rec."Secondary Contact ID" <> xRec."Secondary Contact ID" then begin
+                            L_Calllogs.Reset();
+                            L_Calllogs.SetRange("Customer Account", xRec."Customer Account");
+                            L_Calllogs.SetRange("Employee Responsible", Rec."Salesperson Code");
+                            L_Calllogs.SetRange(Status, L_Calllogs.Status::Open);
+                            if L_Calllogs.FindFirst() then
+                                if L_Calllogs."Customer Account" <> '' then
+                                    Error('Open Call logs exist. Please delete call logs for Sales Person: %1, Sell-to customer No.: %2 and try again', Rec."Salesperson Code", xRec."Customer Account");
+                        end;
                     end;
                 }
             }
@@ -637,13 +712,10 @@ page 90104 "Call log Setup"
         G_FridaySlotsEdit: Boolean;
         G_SaturdaySlotsEdit: Boolean;
         G_SundaySlotsEdit: Boolean;
-        G_EditCallLogSetup: Boolean;
         sales: Page "Sales & Receivables Setup";
 
 
     trigger OnOpenPage()
-    var
-        L_Calllogs: Record "Call Distributions";
     begin
         Clear(G_MondaySlotsEdit);
         Clear(G_TuesdaySlotsEdit);
@@ -687,26 +759,6 @@ page 90104 "Call log Setup"
             G_SundaySlotsEdit := true
         else
             G_SundaySlotsEdit := false;
-
-
-        G_EditCallLogSetup := true;
-        L_Calllogs.Reset();
-        L_Calllogs.SetRange("Customer Account", Rec."Customer Account");
-        L_Calllogs.SetRange("Employee Responsible", Rec."Salesperson Code");
-        if L_Calllogs.FindFirst() then
-            G_EditCallLogSetup := false;
-    end;
-
-    trigger OnAfterGetRecord()
-    var
-        L_Calllogs: Record "Call Distributions";
-    begin
-        G_EditCallLogSetup := true;
-        L_Calllogs.Reset();
-        L_Calllogs.SetRange("Customer Account", Rec."Customer Account");
-        L_Calllogs.SetRange("Employee Responsible", Rec."Salesperson Code");
-        if L_Calllogs.FindFirst() then
-            G_EditCallLogSetup := false;
     end;
 
 }
