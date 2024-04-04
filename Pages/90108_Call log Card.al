@@ -193,7 +193,7 @@ page 90108 "Call log Card"
                         Error('');
 
                     CurrPage.Update();
-                    CTFunctions.CreateCustomertrends(Rec."Customer Account", Rec."Employee Responsible", Rec."Delivery Date", Rec."Route Number", Rec."Route Sequence", Rec."Weekend Ship. Agnt. Serv. Code");
+                    CTFunctions.CreateCustomertrends(Rec."Customer Account", Rec."Employee Responsible", Rec."Delivery Date", Rec."Route Number", Rec."Route Sequence", Rec."Weekend Ship. Agnt. Serv. Code", '');
                 end;
 
             }
