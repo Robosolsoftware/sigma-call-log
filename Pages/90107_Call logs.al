@@ -27,6 +27,16 @@ page 90107 "Call logs"
                         SetRecFilters;
                     end;
                 }
+                field(DelegatedSalesPersonCodeFilter; DelegatedSalesPersonCodeFilter)
+                {
+                    Caption = 'Delegated SalesPerson/Purchaser Code';
+                    TableRelation = "Salesperson/Purchaser";
+                    trigger OnValidate()
+                    begin
+                        //DelegatedSalesPersonCodeFilterOnAfterValidate;
+                        SetRecFilters;
+                    end;
+                }
                 field(CustomerAccountNoFilter; CustomerAccountNoFilter)
                 {
                     Caption = 'Sell-to Customer No.';
@@ -86,6 +96,12 @@ page 90107 "Call logs"
                     ApplicationArea = All;
                     Editable = false;
                     Caption = 'SalesPerson/Purchaser Code';
+                }
+                field("Delegated Sales/Purchaser Code"; Rec."Delegated Sales/Purchaser Code")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    Caption = 'Delegated SalesPerson/Purchaser Code';
                 }
                 field("Planned Date"; Rec."Planned Date")
                 {
@@ -244,7 +260,8 @@ page 90107 "Call logs"
         StatusFilter: Option " ","Open","Closed","No Order","No Response";
         DateFilter: Date;
         CallBookIDFilter: Text;
-        SalesPersonCodeFilter: Text;
+        SalesPersonCodeFilter: Code[20];
+        DelegatedSalesPersonCodeFilter: Code[20];
         CustomerAccountNoFilter: Text;
         PageCaption: Text;
         G_SalesPerson: Record "Salesperson/Purchaser";
@@ -323,6 +340,11 @@ page 90107 "Call logs"
             Rec.SetFilter(Rec."Employee Responsible", SalesPersonCodeFilter)
         else
             Rec.SetRange(Rec."Employee Responsible");
+
+        if DelegatedSalesPersonCodeFilter <> '' then
+            Rec.SetFilter(Rec."Delegated Sales/Purchaser Code", DelegatedSalesPersonCodeFilter)
+        else
+            Rec.SetRange(Rec."Delegated Sales/Purchaser Code");
 
         if CustomerAccountNoFilter <> '' then
             Rec.SetFilter("Customer Account", CustomerAccountNoFilter)

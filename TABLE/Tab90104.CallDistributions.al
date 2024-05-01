@@ -176,6 +176,28 @@ table 90104 "Call Distributions"
             Caption = 'Weekend Shipping Agent Service Code';
             TableRelation = "Shipping Agent Services".Code where("Shipping Agent Code" = field("Route Number"));
         }
+        field(25; "Delegated Sales/Purchaser Code"; Code[100])
+        {
+            Caption = 'Delegated SalesPerson/Purchaser Code';
+            DataClassification = ToBeClassified;
+            TableRelation = "Salesperson/Purchaser";
+
+            trigger OnValidate()
+            var
+                L_UserSetup: Record "User Setup";
+            begin
+                if Rec."Delegated Sales/Purchaser Code" <> '' then begin
+                    L_UserSetup.Reset();
+                    L_UserSetup.SetRange("User ID", UserId);
+                    L_UserSetup.SetFilter("Salespers./Purch. Code", '<>%1', '');
+                    if L_UserSetup.FindFirst() then begin
+                        if L_UserSetup."Salespers./Purch. Code" <> Rec."Delegated Sales/Purchaser Code" then
+                            Error('Please select correct SalesPerson/Purchaser Code. It should be %1', L_UserSetup."Salespers./Purch. Code");
+                    end else
+                        Error('Setup missing. Please select the "Salespers./Purch. Code" on User Setup for User ID: %1', UserId);
+                end;
+            end;
+        }
 
     }
     keys

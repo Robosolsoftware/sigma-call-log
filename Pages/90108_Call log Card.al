@@ -156,6 +156,11 @@ page 90108 "Call log Card"
                     Editable = false;
                     Caption = 'Shipment Day';
                 }
+                field("Delegated Sales/Purchaser Code"; Rec."Delegated Sales/Purchaser Code")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Delegated SalesPerson/Purchaser Code';
+                }
                 field(Status; Rec.Status)
                 {
                     ToolTip = 'Specifies the value of the Status field.';
@@ -188,18 +193,43 @@ page 90108 "Call log Card"
                     CTFunctions: Codeunit "CT Functions";
                     SalesH: Record "Sales Header";
                     ChTrends: Record CustomerTrends;
+                    L_SalesPersonPurchaserCode: Code[20];
                 begin
+                    Clear(L_SalesPersonPurchaserCode);
                     if not Confirm('Do you want to open Customer Trends?', true) then
                         Error('');
 
+                    if Rec."Employee Responsible" <> GetDelegatedSalesperson then begin
+                        if Rec."Delegated Sales/Purchaser Code" <> '' then
+                            L_SalesPersonPurchaserCode := Rec."Delegated Sales/Purchaser Code"
+                        else
+                            Error('Please select the Delegated Sales/Purchaser Code');
+                    end else
+                        L_SalesPersonPurchaserCode := Rec."Employee Responsible";
+
                     CurrPage.Update();
-                    CTFunctions.CreateCustomertrends(Rec."Customer Account", Rec."Employee Responsible", Rec."Delivery Date", Rec."Route Number", Rec."Route Sequence", Rec."Weekend Ship. Agnt. Serv. Code", '');
+                    CTFunctions.CreateCustomertrends(Rec."Customer Account", L_SalesPersonPurchaserCode, Rec."Delivery Date", Rec."Route Number", Rec."Route Sequence", Rec."Weekend Ship. Agnt. Serv. Code", '');
                 end;
 
             }
 
         }
     }
+
+    local procedure GetDelegatedSalesperson(): Code[20]
+    var
+        L_UserSetup: Record "User Setup";
+    begin
+        L_UserSetup.Reset();
+        L_UserSetup.SetRange("User ID", UserId);
+        L_UserSetup.SetFilter("Salespers./Purch. Code", '<>%1', '');
+        if L_UserSetup.FindFirst() then
+            exit(L_UserSetup."Salespers./Purch. Code");
+
+        exit('');
+
+    end;
+
     trigger OnAfterGetCurrRecord()
     begin
         G_Edit := Rec.Status = Rec.Status::Open;
@@ -208,5 +238,6 @@ page 90108 "Call log Card"
     var
         //[InDataSet]
         G_Edit: Boolean;
+        va: Record "Shipping Agent Services";
         tes: Page "Customer Card";
 }
