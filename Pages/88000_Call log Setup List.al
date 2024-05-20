@@ -1,4 +1,4 @@
-page 90103 "Call Log Setup List"
+page 88000 "Call Log Setup List"
 {
     ApplicationArea = All;
     Caption = 'Call Log Setup List';

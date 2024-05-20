@@ -1,4 +1,4 @@
-pageextension 90101 SalesAndRecSetup extends "Sales & Receivables Setup"
+pageextension 88000 SalesAndRecSetup extends "Sales & Receivables Setup"
 {
     layout
     {

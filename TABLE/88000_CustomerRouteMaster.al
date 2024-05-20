@@ -1,4 +1,4 @@
-table 90102 "Customer Route Master"
+table 88000 "Customer Route Master"
 {
     Caption = 'Customer Route Master';
     DataClassification = ToBeClassified;

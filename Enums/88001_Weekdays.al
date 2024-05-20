@@ -1,4 +1,4 @@
-enum 90100 Weekdays
+enum 88001 Weekdays
 {
     Extensible = true;
 

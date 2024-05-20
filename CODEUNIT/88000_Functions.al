@@ -1,4 +1,4 @@
-codeunit 90101 Functions
+codeunit 88000 Functions
 {
     trigger OnRun()
     begin

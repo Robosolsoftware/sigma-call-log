@@ -1,4 +1,4 @@
-page 90108 "Call log Card"
+page 88003 "Call log Card"
 {
     Caption = 'Call Log Card';
     PageType = Card;

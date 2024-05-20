@@ -1,4 +1,4 @@
-enum 90101 "Shipped Status"
+enum 88002 "Shipped Status"
 {
     Extensible = true;
     AssignmentCompatibility = true;

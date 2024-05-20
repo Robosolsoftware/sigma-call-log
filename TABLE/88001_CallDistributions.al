@@ -1,4 +1,4 @@
-table 90104 "Call Distributions"
+table 88001 "Call Distributions"
 {
     DataClassification = ToBeClassified;
 
