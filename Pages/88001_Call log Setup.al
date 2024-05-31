@@ -68,10 +68,12 @@ page 88001 "Call log Setup"
 
                             Rec."Delivery Route" := L_Customer."Shipping Agent Code";
                             Rec."Delivery Sequence" := L_Customer."Shipping Agent Service Code";
+                            Rec."Weekend Shipping Agent Code" := L_Customer."Weekend Shipping Agent Code";
                             Rec."Weekend Ship. Agnt. Serv. Code" := L_Customer."Weekend Ship. Agnt. Serv. Code";
                         end else begin
                             Rec."Delivery Route" := '';
                             Rec."Delivery Sequence" := '';
+                            Rec."Weekend Shipping Agent Code" := '';
                             Rec."Weekend Ship. Agnt. Serv. Code" := '';
                         end;
 
@@ -241,6 +243,13 @@ page 88001 "Call log Setup"
                     ApplicationArea = All;
                     Editable = false;
                     Caption = 'Shipping Agent Service Code';
+                }
+                field("Weekend Shipping Agent Code"; Rec."Weekend Shipping Agent Code")
+                {
+                    ToolTip = 'Specifies the value of the Weekend Shipping Agent Code field.';
+                    ApplicationArea = All;
+                    Editable = false;
+                    Caption = 'Weekend Shipping Agent Code';
                 }
                 field("Weekend Ship. Agnt. Serv. Code"; Rec."Weekend Ship. Agnt. Serv. Code")
                 {

@@ -174,7 +174,7 @@ table 88001 "Call Distributions"
         field(24; "Weekend Ship. Agnt. Serv. Code"; Code[10])
         {
             Caption = 'Weekend Shipping Agent Service Code';
-            TableRelation = "Shipping Agent Services".Code where("Shipping Agent Code" = field("Route Number"));
+            TableRelation = "Shipping Agent Services".Code where("Shipping Agent Code" = field("Weekend Shipping Agent Code"));
         }
         field(25; "Delegated Sales/Purchaser Code"; Code[100])
         {
@@ -195,6 +195,26 @@ table 88001 "Call Distributions"
                             Error('Please select correct SalesPerson/Purchaser Code. It should be %1', L_UserSetup."Salespers./Purch. Code");
                     end else
                         Error('Setup missing. Please select the "Salespers./Purch. Code" on User Setup for User ID: %1', UserId);
+                end;
+            end;
+        }
+        field(26; "Weekend Shipping Agent Code"; Text[30])
+        {
+            Caption = 'Weekend Shipping Agent Code';
+            DataClassification = ToBeClassified;
+            TableRelation = "Shipping Agent";
+            Editable = false;
+
+            trigger OnValidate()
+            var
+                ShippingAgent: Record "Shipping Agent";
+            begin
+                if Rec."Weekend Shipping Agent Code" <> '' then begin
+                    ShippingAgent.Reset();
+                    ShippingAgent.SetRange(code, Rec."Weekend Shipping Agent Code");
+                    ShippingAgent.SetRange(Status, ShippingAgent.Status::Released);
+                    if Not ShippingAgent.FindFirst() then
+                        Error('Status must be equal to Released in Shipping Agent');
                 end;
             end;
         }

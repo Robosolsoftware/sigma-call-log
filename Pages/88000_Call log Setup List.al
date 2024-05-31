@@ -42,4 +42,30 @@ page 88000 "Call Log Setup List"
             }
         }
     }
+    actions
+    {
+        area(Processing)
+        {
+            action("Create Initial Log")
+            {
+                ApplicationArea = All;
+                Image = Create;
+
+                trigger OnAction()
+                var
+                    CustomerRouteMaster: Record "Customer Route Master";
+                    G_Functions: Codeunit Functions;
+                begin
+                    CustomerRouteMaster.Reset();
+                    if CustomerRouteMaster.FindSet() then begin
+                        repeat
+                            CustomerRouteMaster.TestField("Customer Account");
+                            CustomerRouteMaster.TestField("Salesperson Code");
+                            G_Functions.SetDistribution(CustomerRouteMaster);
+                        until CustomerRouteMaster.Next() = 0;
+                    end;
+                end;
+            }
+        }
+    }
 }

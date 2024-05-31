@@ -224,6 +224,13 @@ page 88002 "Call logs"
                     Caption = 'Shipping Agent Service Code';
 
                 }
+                field("Weekend Shipping Agent Code"; Rec."Weekend Shipping Agent Code")
+                {
+                    ToolTip = 'Specifies the value of the Weekend Shipping Agent Code field.';
+                    ApplicationArea = All;
+                    Editable = false;
+                    Caption = 'Weekend Shipping Agent Code';
+                }
                 field("Weekend Ship. Agnt. Serv. Code"; Rec."Weekend Ship. Agnt. Serv. Code")
                 {
                     ToolTip = 'Specifies the value of the Weekend Shipping Agent Service Code field.';

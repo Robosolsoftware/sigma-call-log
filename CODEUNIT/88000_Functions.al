@@ -692,6 +692,9 @@ codeunit 88000 Functions
 
             L_CallDistribution.Validate("Customer name", L_Customer.Name);
             L_CallDistribution.Validate("Route Number", Rec."Delivery Route");
+            L_CallDistribution.Validate("Route Sequence", Rec."Delivery Sequence");
+            L_CallDistribution.Validate("Weekend Shipping Agent Code", Rec."Weekend Shipping Agent Code");
+            L_CallDistribution.Validate("Weekend Ship. Agnt. Serv. Code", Rec."Weekend Ship. Agnt. Serv. Code");
             //L_CallDistribution.Validate("Call Book ID", Rec."Call Book ID");
             L_CallDistribution.Validate("Planned Date", NewDate);
 
@@ -719,8 +722,6 @@ codeunit 88000 Functions
 
             L_CallDistribution.Validate("Planned Time", _CallTime);
             L_CallDistribution.Validate("Employee Responsible", Rec."Salesperson Code");
-            L_CallDistribution.Validate("Route Sequence", Rec."Delivery Sequence");
-            L_CallDistribution.Validate("Weekend Ship. Agnt. Serv. Code", Rec."Weekend Ship. Agnt. Serv. Code");
             L_CallDistribution.Validate("Day Slot No.", _DateSlotNo);
             L_CallDistribution.Validate("Call Day", _Day);
             L_CallDistribution.Modify(true);
@@ -748,6 +749,9 @@ codeunit 88000 Functions
             L_CallDistribution.Validate("Route Number", Rec."Delivery Route");
             //L_CallDistribution.Validate("Call Book ID", Rec."Call Book ID");
             L_CallDistribution.Validate("Planned Date", NewDate);
+            L_CallDistribution.Validate("Route Sequence", Rec."Delivery Sequence");
+            L_CallDistribution.Validate("Weekend Shipping Agent Code", Rec."Weekend Shipping Agent Code");
+            L_CallDistribution.Validate("Weekend Ship. Agnt. Serv. Code", Rec."Weekend Ship. Agnt. Serv. Code");
             //Update Delivery date and day based on weekend shipping agent service code++
             //This is new requirement++
             if UpperCase(_Day) = UpperCase('FRIDAY') then begin
@@ -773,8 +777,6 @@ codeunit 88000 Functions
             L_CallDistribution.Validate("Planned Time", _CallTime);
             L_CallDistribution.Validate("Employee Responsible", Rec."Salesperson Code");
             // L_CallDistribution.Validate("Delivery Date", CalcDate('<+1D>', L_CallDistribution."Planned Date"));//Pranali08222023_US_13869
-            L_CallDistribution.Validate("Route Sequence", Rec."Delivery Sequence");
-            L_CallDistribution.Validate("Weekend Ship. Agnt. Serv. Code", Rec."Weekend Ship. Agnt. Serv. Code");
             L_CallDistribution.Validate("Day Slot No.", _DateSlotNo);
             L_CallDistribution.Validate("Call Day", _Day);
             L_CallDistribution.Insert(true);
