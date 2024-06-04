@@ -46,7 +46,7 @@ page 88000 "Call Log Setup List"
     {
         area(Processing)
         {
-            action("Create Initial Log")
+            action("Bulk Create Initial Log")
             {
                 ApplicationArea = All;
                 Image = Create;
