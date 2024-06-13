@@ -134,6 +134,12 @@ page 88003 "Call log Card"
                     Editable = false;
                     Caption = 'Shipping Agent Service Code';
                 }
+                field("Weekend Shipping Agent Code"; Rec."Weekend Shipping Agent Code")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    Caption = 'Weekend Shipping Agent Code';
+                }
                 field("Weekend Ship. Agnt. Serv. Code"; Rec."Weekend Ship. Agnt. Serv. Code")
                 {
                     ApplicationArea = All;
@@ -199,6 +205,8 @@ page 88003 "Call log Card"
                     if not Confirm('Do you want to open Customer Trends?', true) then
                         Error('');
 
+                    Rec.TestField(Status, Rec.Status::Open);
+
                     if Rec."Employee Responsible" <> GetDelegatedSalesperson then begin
                         if Rec."Delegated Sales/Purchaser Code" <> '' then
                             L_SalesPersonPurchaserCode := Rec."Delegated Sales/Purchaser Code"
@@ -208,7 +216,7 @@ page 88003 "Call log Card"
                         L_SalesPersonPurchaserCode := Rec."Employee Responsible";
 
                     CurrPage.Update();
-                    CTFunctions.CreateCustomertrends(Rec."Customer Account", L_SalesPersonPurchaserCode, Rec."Delivery Date", Rec."Route Number", Rec."Route Sequence", Rec."Weekend Ship. Agnt. Serv. Code", '');
+                    CTFunctions.CreateCustomertrends(Rec."Customer Account", L_SalesPersonPurchaserCode, Rec."Delivery Date", Rec."Route Number", Rec."Route Sequence", Rec."Weekend Ship. Agnt. Serv. Code", '', Rec."Weekend Shipping Agent Code");
                 end;
 
             }

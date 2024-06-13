@@ -233,6 +233,7 @@ table 88001 "Call Distributions"
         L_CallDistribution: Record "Call Distributions";
         L_CallDistribution1: Record "Call Distributions";
         NoSeriesMgt: Codeunit NoSeriesManagement;
+        //NoSeriesMgt: Codeunit "No. Series - Batch";
         SalesRecSetup: Record "Sales & Receivables Setup";
         L_Date: Record Date;
         L_ShippingAgentServices: Record "Shipping Agent Services";
@@ -241,6 +242,7 @@ table 88001 "Call Distributions"
         NewDate: Date;
         Day: Text;
         L_Contact: Record Contact;
+        tes: Page "Posted Sales Invoices";
     begin
         Clear(NewDate);
         Clear(NewDFvar);
@@ -257,6 +259,9 @@ table 88001 "Call Distributions"
         L_CallDistribution.Validate("Secondary Telephone", Rec."Secondary Telephone");
         L_CallDistribution.Validate("Customer name", Rec."Customer name");
         L_CallDistribution.Validate("Route Number", Rec."Route Number");
+        L_CallDistribution.Validate("Route Sequence", Rec."Route Sequence");
+        L_CallDistribution.Validate("Weekend Shipping Agent Code", Rec."Weekend Shipping Agent Code");
+        L_CallDistribution.Validate("Weekend Ship. Agnt. Serv. Code", Rec."Weekend Ship. Agnt. Serv. Code");
         L_CallDistribution.Validate("Call Day", Rec."Call Day");
         L_Contact.Reset();
         if L_Contact.Get(Rec.Contact) then begin
@@ -310,8 +315,6 @@ table 88001 "Call Distributions"
         L_CallDistribution.Validate("Planned Time", Rec."Planned Time");
         L_CallDistribution.Validate("Employee Responsible", Rec."Employee Responsible");
         // L_CallDistribution.Validate("Delivery Date", CalcDate('<+1D>', L_CallDistribution."Planned Date"));//Pranali08222023_US_13869
-        L_CallDistribution.Validate("Route Sequence", Rec."Route Sequence");
-        L_CallDistribution.Validate("Weekend Ship. Agnt. Serv. Code", Rec."Weekend Ship. Agnt. Serv. Code");
         L_CallDistribution.Validate("Day Slot No.", Rec."Day Slot No.");
         L_CallDistribution.Insert(true);
         Message('Next Call log Created.');
