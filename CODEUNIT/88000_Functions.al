@@ -678,6 +678,7 @@ codeunit 88000 Functions
             L_CallDistribution.Validate("Customer Account", Rec."Customer Account");
             L_CallDistribution.Validate(Contact, Rec."Contact ID");
             L_CallDistribution.Validate("Secondary Contact", Rec."Secondary Contact ID");
+            L_CallDistribution.Validate("Employee Responsible", Rec."Salesperson Code");
             L_CallDistribution.Validate(Status, L_CallDistribution.Status::Open);
             L_Contact.Reset();
             if L_Contact.Get(Rec."Contact ID") then begin
@@ -721,7 +722,6 @@ codeunit 88000 Functions
             end;
 
             L_CallDistribution.Validate("Planned Time", _CallTime);
-            L_CallDistribution.Validate("Employee Responsible", Rec."Salesperson Code");
             L_CallDistribution.Validate("Day Slot No.", _DateSlotNo);
             L_CallDistribution.Validate("Call Day", _Day);
             L_CallDistribution.Modify(true);
@@ -732,6 +732,7 @@ codeunit 88000 Functions
             L_CallDistribution.Validate("Customer Account", Rec."Customer Account");
             L_CallDistribution.Validate(Contact, Rec."Contact ID");
             L_CallDistribution.Validate("Secondary Contact", Rec."Secondary Contact ID");
+            L_CallDistribution.Validate("Employee Responsible", Rec."Salesperson Code");
             L_CallDistribution.Validate(Status, L_CallDistribution.Status::Open);
 
             L_Contact.Reset();
@@ -775,7 +776,6 @@ codeunit 88000 Functions
             end;
 
             L_CallDistribution.Validate("Planned Time", _CallTime);
-            L_CallDistribution.Validate("Employee Responsible", Rec."Salesperson Code");
             // L_CallDistribution.Validate("Delivery Date", CalcDate('<+1D>', L_CallDistribution."Planned Date"));//Pranali08222023_US_13869
             L_CallDistribution.Validate("Day Slot No.", _DateSlotNo);
             L_CallDistribution.Validate("Call Day", _Day);

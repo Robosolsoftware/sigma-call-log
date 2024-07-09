@@ -15,18 +15,20 @@ table 88001 "Call Distributions"
             OptionMembers = "Open","Closed","No Order","No Response";
             trigger OnValidate()
             begin
-                //Check the permission++
-                //if Rec.Status <> Rec.Status::Open then begin
-                if Rec."Employee Responsible" <> GetDelegatedSalesperson then begin
-                    if Rec."Delegated Sales/Purchaser Code" = '' then
-                        Error('Please select the Delegated Sales/Purchaser Code');
-                end;
-                //end;
-
-
-                if Rec.Status <> Rec.Status::Open then
+                if Rec.Status <> Rec.Status::Open then begin
                     if not Confirm(StrSubstNo('Are you sure you want to change the status to %1?', Rec.Status), false) then
                         Error('');
+
+                    //Check the permission++
+                    if Rec."Employee Responsible" <> GetDelegatedSalesperson then begin
+                        if Rec."Delegated Sales/Purchaser Code" = '' then
+                            Error('Please select the Delegated Sales/Purchaser Code')
+                        else begin
+                            if Rec."Delegated Sales/Purchaser Code" <> UserId then
+                                Error('You are not Delegated person to close this call log');
+                        end;
+                    end;
+                end;
 
                 //Pranali08302023_US_13869++
                 if (Rec.Status = Rec.Status::Closed) OR (Rec.Status = Rec.Status::"No Order") OR (Rec.Status = Rec.Status::"No Response") then begin
@@ -290,6 +292,7 @@ table 88001 "Call Distributions"
         L_CallDistribution.Validate("Customer Account", Rec."Customer Account");
         L_CallDistribution.Validate(Contact, Rec.Contact);
         L_CallDistribution.Validate("Secondary Contact", Rec."Secondary Contact");
+        L_CallDistribution.Validate("Employee Responsible", Rec."Employee Responsible");
         L_CallDistribution.Validate(Status, L_CallDistribution.Status::Open);
         L_CallDistribution.Validate(Telephone, Rec.Telephone);
         L_CallDistribution.Validate("Secondary Telephone", Rec."Secondary Telephone");
@@ -349,7 +352,6 @@ table 88001 "Call Distributions"
         end;
 
         L_CallDistribution.Validate("Planned Time", Rec."Planned Time");
-        L_CallDistribution.Validate("Employee Responsible", Rec."Employee Responsible");
         // L_CallDistribution.Validate("Delivery Date", CalcDate('<+1D>', L_CallDistribution."Planned Date"));//Pranali08222023_US_13869
         L_CallDistribution.Validate("Day Slot No.", Rec."Day Slot No.");
         L_CallDistribution.Insert(true);

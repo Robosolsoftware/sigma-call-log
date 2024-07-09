@@ -213,7 +213,10 @@ page 88003 "Call log Card"
 
                     if Rec."Employee Responsible" <> GetDelegatedSalesperson then begin
                         if Rec."Delegated Sales/Purchaser Code" <> '' then
-                            L_SalesPersonPurchaserCode := Rec."Delegated Sales/Purchaser Code"
+                            if Rec."Delegated Sales/Purchaser Code" = UserId then
+                                L_SalesPersonPurchaserCode := Rec."Delegated Sales/Purchaser Code"
+                            else
+                                Error('You are not Delegated person to open Customer Trends')
                         else
                             Error('Please select the Delegated Sales/Purchaser Code');
                     end else
