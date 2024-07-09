@@ -174,7 +174,11 @@ page 88003 "Call log Card"
                     Editable = G_Edit;
                     trigger OnValidate()
                     begin
+                        //Update Page Before Process Table Trigger++
                         CurrPage.Update();
+
+                        //Close the Page after Process table trigger+
+                        CurrPage.Close();
                     end;
                 }
             }

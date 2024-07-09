@@ -15,6 +15,15 @@ table 88001 "Call Distributions"
             OptionMembers = "Open","Closed","No Order","No Response";
             trigger OnValidate()
             begin
+                //Check the permission++
+                //if Rec.Status <> Rec.Status::Open then begin
+                if Rec."Employee Responsible" <> GetDelegatedSalesperson then begin
+                    if Rec."Delegated Sales/Purchaser Code" = '' then
+                        Error('Please select the Delegated Sales/Purchaser Code');
+                end;
+                //end;
+
+
                 if Rec.Status <> Rec.Status::Open then
                     if not Confirm(StrSubstNo('Are you sure you want to change the status to %1?', Rec.Status), false) then
                         Error('');
@@ -186,15 +195,18 @@ table 88001 "Call Distributions"
             var
                 L_UserSetup: Record "User Setup";
             begin
-                if Rec."Delegated Sales/Purchaser Code" <> '' then begin
-                    L_UserSetup.Reset();
-                    L_UserSetup.SetRange("User ID", UserId);
-                    L_UserSetup.SetFilter("Salespers./Purch. Code", '<>%1', '');
-                    if L_UserSetup.FindFirst() then begin
-                        if L_UserSetup."Salespers./Purch. Code" <> Rec."Delegated Sales/Purchaser Code" then
-                            Error('Please select correct SalesPerson/Purchaser Code. It should be %1', L_UserSetup."Salespers./Purch. Code");
-                    end else
-                        Error('Setup missing. Please select the "Salespers./Purch. Code" on User Setup for User ID: %1', UserId);
+                //Check Permission++
+                if CheckSuperpermission() = false then begin
+                    if Rec."Delegated Sales/Purchaser Code" <> '' then begin
+                        L_UserSetup.Reset();
+                        L_UserSetup.SetRange("User ID", UserId);
+                        L_UserSetup.SetFilter("Salespers./Purch. Code", '<>%1', '');
+                        if L_UserSetup.FindFirst() then begin
+                            if L_UserSetup."Salespers./Purch. Code" <> Rec."Delegated Sales/Purchaser Code" then
+                                Error('Please select correct SalesPerson/Purchaser Code. It should be %1', L_UserSetup."Salespers./Purch. Code");
+                        end else
+                            Error('Setup missing. Please select the "Salespers./Purch. Code" on User Setup for User ID: %1', UserId);
+                    end;
                 end;
             end;
         }
@@ -227,6 +239,30 @@ table 88001 "Call Distributions"
             Clustered = true;
         }
     }
+
+    local procedure CheckSuperpermission(): Boolean
+    var
+        L_UserSetup: Record "User Setup";
+    begin
+        if L_UserSetup.Get(UserId) then begin
+            exit(L_UserSetup."Allow to Edit Call log");
+        end else
+            exit(false);
+    end;
+
+    local procedure GetDelegatedSalesperson(): Code[20]
+    var
+        L_UserSetup: Record "User Setup";
+    begin
+        L_UserSetup.Reset();
+        L_UserSetup.SetRange("User ID", UserId);
+        L_UserSetup.SetFilter("Salespers./Purch. Code", '<>%1', '');
+        if L_UserSetup.FindFirst() then
+            exit(L_UserSetup."Salespers./Purch. Code");
+
+        exit('');
+
+    end;
 
     local procedure CreateCallDistribution(Rec: Record "Call Distributions")
     var
