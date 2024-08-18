@@ -198,19 +198,19 @@ page 88003 "Call log Card"
                 PromotedCategory = Process;
                 trigger OnAction()
                 var
-                    L_CustomerTrendTable: Record CustomerTrends;
-                    L_CustomerTrendsPage: Page "Customer Trends";
                     CTFunctions: Codeunit "CT Functions";
-                    SalesH: Record "Sales Header";
-                    ChTrends: Record CustomerTrends;
                     L_SalesPersonPurchaserCode: Code[20];
                 begin
                     Clear(L_SalesPersonPurchaserCode);
+
+                    //Confirmation++
                     if not Confirm('Do you want to open Customer Trends?', true) then
                         Error('');
 
+                    //Check Open Status++
                     Rec.TestField(Status, Rec.Status::Open);
 
+                    //Check Permission++
                     if Rec."Employee Responsible" <> GetDelegatedSalesperson then begin
                         if Rec."Delegated Sales/Purchaser Code" <> '' then
                             if Rec."Delegated Sales/Purchaser Code" = UserId then
@@ -222,8 +222,9 @@ page 88003 "Call log Card"
                     end else
                         L_SalesPersonPurchaserCode := Rec."Employee Responsible";
 
+                    //Create and Open CT++
                     CurrPage.Update();
-                    CTFunctions.CreateCustomertrends(Rec."Customer Account", L_SalesPersonPurchaserCode, Rec."Delivery Date", Rec."Route Number", Rec."Route Sequence", Rec."Weekend Ship. Agnt. Serv. Code", '', Rec."Weekend Shipping Agent Code");
+                    CTFunctions.CreateCustomertrendsFromCallLog(Rec."Customer Account", L_SalesPersonPurchaserCode, Rec."Delivery Date", Rec."Route Number", Rec."Route Sequence", Rec."Weekend Ship. Agnt. Serv. Code", '', Rec."Weekend Shipping Agent Code", Rec."Planned Date", Rec."Planned Time");
                 end;
 
             }
