@@ -213,7 +213,7 @@ page 88003 "Call log Card"
                     //Check Permission++
                     if Rec."Employee Responsible" <> GetDelegatedSalesperson then begin
                         if Rec."Delegated Sales/Purchaser Code" <> '' then
-                            if Rec."Delegated Sales/Purchaser Code" = UserId then
+                            if Rec."Delegated Sales/Purchaser Code" = GetDelegatedSalesperson then
                                 L_SalesPersonPurchaserCode := Rec."Delegated Sales/Purchaser Code"
                             else
                                 Error('You are not Delegated person to open Customer Trends')
@@ -232,7 +232,7 @@ page 88003 "Call log Card"
         }
     }
 
-    local procedure GetDelegatedSalesperson(): Code[20]
+    local procedure GetDelegatedSalesperson(): Code[100]
     var
         L_UserSetup: Record "User Setup";
     begin

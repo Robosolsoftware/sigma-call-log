@@ -262,6 +262,32 @@ page 88002 "Call logs"
             }
         }
     }
+
+    actions
+    {
+        area(Processing)
+        {
+            action("Assign Delegated SalesPerson/Purchaser Code")
+            {
+                ApplicationArea = All;
+                Image = Change;
+
+                trigger OnAction()
+                var
+                    UpdateDelegatedPerson: Report "Select Delegated SalesPerson";
+                    L_CallLogs: Record "Call Distributions";
+                begin
+                    L_CallLogs.Reset();
+                    Clear(UpdateDelegatedPerson);
+                    CurrPage.SetSelectionFilter(L_CallLogs);
+                    if L_CallLogs.FindSet() then begin
+                        UpdateDelegatedPerson.SetTableView(L_CallLogs);
+                        UpdateDelegatedPerson.Run();
+                    end;
+                end;
+            }
+        }
+    }
     var
 
         StatusFilter: Option " ","Open","Closed","No Order","No Response";
