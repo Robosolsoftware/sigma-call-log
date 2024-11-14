@@ -7,7 +7,7 @@
             "type": "al",
             "environmentType": "Sandbox",
             //"environmentName": "Copy_04092024",
-            "environmentName": "Sigma_Beta_UAT",
+            "environmentName": "Copy_10102024",
             "startupObjectId": 22,
             "startupObjectType": "Page",
             "breakOnError": "All",

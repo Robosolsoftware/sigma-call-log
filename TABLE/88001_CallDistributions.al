@@ -24,7 +24,7 @@ table 88001 "Call Distributions"
                         if Rec."Delegated Sales/Purchaser Code" = '' then
                             Error('Please select the Delegated Sales/Purchaser Code')
                         else begin
-                            if Rec."Delegated Sales/Purchaser Code" <> UserId then
+                            if Rec."Delegated Sales/Purchaser Code" <> GetDelegatedSalesperson then
                                 Error('You are not Delegated person to close this call log');
                         end;
                     end;
