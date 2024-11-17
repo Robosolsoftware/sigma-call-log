@@ -41,6 +41,17 @@ table 88001 "Call Distributions"
         {
             Caption = 'Sell-to Customer No.';
             DataClassification = ToBeClassified;
+            trigger OnValidate()
+            var
+                L_Customer: Record Customer;
+            begin
+                L_Customer.Reset();
+                L_Customer.SetRange("No.", Rec."Customer Account");
+                if L_Customer.FindFirst() then begin
+                    if L_Customer.Blocked <> L_Customer.Blocked::" " then
+                        Error('Customer %1 is blocked', L_Customer."No.");
+                end;
+            end;
         }
         field(4; Contact; Code[30])
         {

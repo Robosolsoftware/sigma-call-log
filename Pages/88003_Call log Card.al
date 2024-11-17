@@ -200,8 +200,16 @@ page 88003 "Call log Card"
                 var
                     CTFunctions: Codeunit "CT Functions";
                     L_SalesPersonPurchaserCode: Code[20];
+                    L_Customer: Record Customer;
                 begin
                     Clear(L_SalesPersonPurchaserCode);
+
+                    L_Customer.Reset();
+                    L_Customer.SetRange("No.", Rec."Customer Account");
+                    if L_Customer.FindFirst() then begin
+                        if L_Customer.Blocked <> L_Customer.Blocked::" " then
+                            Error('Customer %1 is blocked', L_Customer."No.");
+                    end;
 
                     //Confirmation++
                     if not Confirm('Do you want to open Customer Trends?', true) then
