@@ -55,13 +55,21 @@ page 88000 "Call Log Setup List"
                 var
                     CustomerRouteMaster: Record "Customer Route Master";
                     G_Functions: Codeunit Functions;
+                    L_Customer: Record Customer;
                 begin
                     CustomerRouteMaster.Reset();
+                    //CurrPage.SetSelectionFilter(CustomerRouteMaster);
                     if CustomerRouteMaster.FindSet() then begin
                         repeat
-                            CustomerRouteMaster.TestField("Customer Account");
-                            CustomerRouteMaster.TestField("Salesperson Code");
-                            G_Functions.SetDistribution(CustomerRouteMaster);
+                            L_Customer.Reset();
+                            L_Customer.SetRange("No.", Rec."Customer Account");
+                            if L_Customer.FindFirst() then begin
+                                if L_Customer.Blocked <> L_Customer.Blocked::All then begin
+                                    CustomerRouteMaster.TestField("Customer Account");
+                                    CustomerRouteMaster.TestField("Salesperson Code");
+                                    G_Functions.SetDistribution(CustomerRouteMaster);
+                                end;
+                            end;
                         until CustomerRouteMaster.Next() = 0;
                     end;
                 end;
