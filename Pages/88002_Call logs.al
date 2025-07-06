@@ -296,7 +296,6 @@ page 88002 "Call logs"
         SalesPersonCodeFilter: Code[20];
         DelegatedSalesPersonCodeFilter: Code[20];
         CustomerAccountNoFilter: Text;
-        PageCaption: Text;
         G_SalesPerson: Record "Salesperson/Purchaser";
         G_IsopenFromCustomerRout: Boolean;
         G_SalesPersonCodeFilter: Text;
