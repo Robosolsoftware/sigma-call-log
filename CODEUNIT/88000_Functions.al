@@ -649,7 +649,8 @@ codeunit 88000 Functions
     var
         L_CallDistribution: Record "Call Distributions";
         L_CallDistribution1: Record "Call Distributions";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        //NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         SalesRecSetup: Record "Sales & Receivables Setup";
         L_Customer: Record Customer;
         Day: Text;

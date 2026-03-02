@@ -281,7 +281,8 @@ table 88001 "Call Distributions"
     var
         L_CallDistribution: Record "Call Distributions";
         L_CallDistribution1: Record "Call Distributions";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        //NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         //NoSeriesMgt: Codeunit "No. Series - Batch";
         SalesRecSetup: Record "Sales & Receivables Setup";
         L_Date: Record Date;
